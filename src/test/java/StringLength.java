@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Test;
-import io.restassured.RestAssured;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StringLength {
     @Test
