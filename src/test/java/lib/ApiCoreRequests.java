@@ -72,4 +72,13 @@ public class ApiCoreRequests {
                 .put(url)
                 .andReturn();
     }
+
+    @Step("Make a POST-Request for user generation")
+    public JsonPath makePostForGeneration(String url, Map<String, String> authData) {
+        return given()
+                .filter(new AllureRestAssured())
+                .body(authData)
+                .post(url)
+                .jsonPath();
+    }
 }

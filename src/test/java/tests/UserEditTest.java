@@ -76,11 +76,8 @@ public class UserEditTest extends BaseTestCase {
         //Generate User
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
-        JsonPath responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
-                .jsonPath();
+        JsonPath responseCreateAuth = apiCoreRequests
+                .makePostForGeneration("https://playground.learnqa.ru/api/user", userData);
 
         String userId = responseCreateAuth.getString("id");
 
@@ -97,21 +94,15 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Description("This negative test try to change user profile with authorization from other user")
-    @DisplayName("Edit user profile with auth from other user")
+    @DisplayName("Edit with auth from other user")
     @Test
     public void testEditOtherUser() {
         //Generate User
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
-        JsonPath responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
-                .jsonPath();
+        JsonPath responseCreateAuth = apiCoreRequests
+                .makePostForGeneration("https://playground.learnqa.ru/api/user", userData);
 
-        String userId = responseCreateAuth.getString("id");
-        System.out.println(userId);
-        System.out.println(userId+"1");
 
         //Login
         Map<String, String> authData = new HashMap<>();
@@ -124,15 +115,19 @@ public class UserEditTest extends BaseTestCase {
         //Edit
         String newName = "Changed Name";
         Map<String, String> editData = new HashMap<>();
-        editData.put("firstName", newName);
+        editData.put("username", newName);
 
         Response responseEditUser = apiCoreRequests
-                .makePutRequestWithAuth("https://playground.learnqa.ru/api/user/" + "67976", this.getHeader(responseGetAuth, "x-csrf-token"), this.getCookie(responseGetAuth,"auth_sid"), editData);
+                .makePutRequestWithAuth("https://playground.learnqa.ru/api/user/2", this.getHeader(responseGetAuth, "x-csrf-token"), this.getCookie(responseGetAuth,"auth_sid"), editData);
 
-       System.out.println(responseEditUser.statusCode());
-       responseEditUser.print();
+       System.out.println(responseEditUser.body());
 
-        // Assertions.assertResponseTextEquals(responseEditUser, "<User not found>");
+
+        //Get
+        Response responseUserData = apiCoreRequests
+                .makeGetRequest("https://playground.learnqa.ru/api/user/2", this.getHeader(responseGetAuth, "x-csrf-token"), this.getCookie(responseGetAuth,"auth_sid"));
+
+          Assertions.assertJsonByName(responseUserData, "username", "Vitaliy");
     }
 
     @Description("This negative test try to change email for invalid one")
@@ -142,11 +137,8 @@ public class UserEditTest extends BaseTestCase {
         //Generate User
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
-        JsonPath responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
-                .jsonPath();
+        JsonPath responseCreateAuth = apiCoreRequests
+                .makePostForGeneration("https://playground.learnqa.ru/api/user", userData);
 
         String userId = responseCreateAuth.getString("id");
 
@@ -182,11 +174,8 @@ public class UserEditTest extends BaseTestCase {
         //Generate User
         Map<String, String> userData = DataGenerator.getRegistrationData();
 
-        JsonPath responseCreateAuth = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
-                .jsonPath();
+        JsonPath responseCreateAuth = apiCoreRequests
+                .makePostForGeneration("https://playground.learnqa.ru/api/user", userData);
 
         String userId = responseCreateAuth.getString("id");
 
