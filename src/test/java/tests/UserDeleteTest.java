@@ -1,8 +1,6 @@
 package tests;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
@@ -23,6 +21,8 @@ public class UserDeleteTest extends BaseTestCase {
 
     @Description("Could not delete user with ID 2")
     @DisplayName("Delete user 2 fail")
+    @Story("Negative")
+    @Severity(SeverityLevel.NORMAL)
     @Test
     public void testDeleteUser2() {
 
@@ -59,6 +59,8 @@ public class UserDeleteTest extends BaseTestCase {
 
     @Description("Successful delete user")
     @DisplayName("Delete user positive")
+    @Story("Positive")
+    @Severity(SeverityLevel.BLOCKER)
     @Test
     public void testDeleteUserPositive() {
 
@@ -95,6 +97,8 @@ public class UserDeleteTest extends BaseTestCase {
 
     @Description("Couldn`t delete user with other user auth")
     @DisplayName("Delete user with other auth")
+    @Story("Negative")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     public void testDeleteUserWithOtherAuth() {
 
