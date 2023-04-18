@@ -111,21 +111,37 @@ public class UserRegisterTest extends BaseTestCase {
 
     @Description("This test checks that all strings from User Data are not empty")
     @DisplayName("Empty strings in registration form")
-    @Test
+    @ParameterizedTest
+    @ValueSource (strings = {"email", "password", "username", "firstName", "lastName"})
 
-    public void testEmptyString(){
+    public void testEmptyString(String parameter){
 
-        String firstName = "";
         Map<String, String> userData = new HashMap<>();
-        userData.put("firstName", firstName);
+        userData.put(parameter, "");
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responseCreateAuth = apiCoreRequests
                 .makePostRequest("https://playground.learnqa.ru/api/user", userData);
 
-        Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
-        Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'firstName' field is too short");
+        if (parameter.equals("email")) {
+            Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+            Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'email' field is too short");
+        } else if (parameter.equals("password")) {
+            Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+            Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'password' field is too short");
 
+        }else if (parameter.equals("username")) {
+            Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+            Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'username' field is too short");
+
+        }else if (parameter.equals("firstName")) {
+            Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+            Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'firstName' field is too short");
+
+        } else {
+            Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
+            Assertions.assertResponseTextEquals(responseCreateAuth, "The value of 'lastName' field is too short");
+        }
     }
 
 }
